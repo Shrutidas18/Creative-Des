@@ -194,7 +194,7 @@ const GLOBAL_CSS = `
     .about-grid   { grid-template-columns: 1fr !important; gap: 40px !important; }
     .about-bio    { order: -1; }
     .section-pad  { padding: 72px 24px !important; }
-    .hero-pad     { padding: 0 24px 64px !important; }
+    .hero-pad     { padding: 72px 24px 56px !important; }
     .nav-pad      { padding: 18px 24px !important; }
     .slot-pad     { padding: 80px 24px 120px !important; }
     .contact-pad  { padding: 100px 24px 72px !important; }
@@ -232,27 +232,49 @@ const MINI_PROJECTS = [
   { id:4, title:"Landing Page", desc:"A basic responsive landing page.",                      tags:["HTML","CSS","JS"], url:"https://landing-page-shruti-das-projects-64e0d3f9.vercel.app/" },
 ];
 const MAIN_PROJECTS = [
-  { id:1, title:"BareGlow Skincare",    desc:"A full skincare product Web App built with React.",       tags:["React","CSS","UI/UX"],  url:"https://bare-glow-shruti-das-projects-64e0d3f9.vercel.app/" },
-  { id:2, title:"Photo Booth Web App",  desc:"Take snapshots using camera & apply fun effects.",        tags:["React","Camera API"],   url:"https://your-photobooth-url.netlify.app" },
-  { id:3, title:"Shree Ganesh Patholab",desc:"Real-time client project built during internship.",       tags:["React","Client Work"],  url:"https://ganesh-patholab.vercel.app/" },
-  { id:4, title:"Pranabandhu Sahoo",    desc:"Personal website for a client, built during internship.", tags:["React","Client Work"],  url:"https://pranabandhu.com/" },
+  { id:1, title:"Resume Analyzer",      desc:"An AI-powered resume analyzer that reviews your resume, scores it against a job description, and suggests improvements. Built with React and integrated with an LLM API.", tags:["React","AI","LLM","Python"], url:null },
+  { id:2, title:"BareGlow Skincare",    desc:"A full skincare product Web App built with React.",                                                                               tags:["React","CSS","UI/UX"],          url:"https://bare-glow-shruti-das-projects-64e0d3f9.vercel.app/" },
+  { id:3, title:"Photo Booth Web App",  desc:"Take snapshots using camera & apply fun effects.",                                                                                tags:["React","Camera API"],           url:"https://your-photobooth-url.netlify.app" },
+  { id:4, title:"Shree Ganesh Patholab",desc:"Real-time client project built during internship.",                                                                               tags:["React","Client Work"],          url:"https://ganesh-patholab.vercel.app/" },
+  { id:5, title:"Pranabandhu Sahoo",    desc:"Personal website for a client, built during internship.",                                                                         tags:["React","Client Work"],          url:"https://pranabandhu.com/" },
 ];
 const DESIGN_WORK = [
   { id:1, title:"Social Media Graphics", desc:"12 graphics created for various brands and campaigns.", tags:["Canva","Graphic Design"], url:"#" },
   { id:2, title:"UI/UX Designs",         desc:"Figma mockups and wireframes for web interfaces.",      tags:["Figma","UI/UX"],          url:"#" },
 ];
-const SKILLS = {
-  Languages:  ["Python","JavaScript","Java"],
-  Frameworks: ["React","CSS3"],
-  Databases:  ["MySQL"],
-  Tools:      ["Git","Figma","Canva","Trello","Power BI","Excel"],
-};
+const SKILLS = [
+  {
+    cat: "Languages",
+    items: ["Python","JavaScript","Java","HTML5","CSS3"],
+  },
+  {
+    cat: "Frameworks & Libraries",
+    items: ["React","Three.js","GSAP","Tailwind CSS","Framer Motion"],
+  },
+  {
+    cat: "Databases & Backend",
+    items: ["MySQL","Firebase","REST APIs","DBMS Concepts"],
+  },
+  {
+    cat: "Design & Tools",
+    items: ["Figma","Canva","Git","GitHub","VS Code","Power BI","Excel","Trello"],
+  },
+  {
+    cat: "Concepts",
+    items: ["UI/UX Design","Responsive Design","OOP","Data Structures","Agile","Product Management"],
+  },
+  {
+    cat: "Currently Learning",
+    items: ["AI & ML Concepts","Large Language Models (LLMs)","Prompt Engineering","Generative AI","Data Science"],
+  },
+];
 const CERTS = [
   { title:"Advanced MS Excel",                  issuer:"Microsoft", year:"2023", url:"https://drive.google.com/file/d/1dlSErl8mOzIymfioG4L_9cuAj020llSQ/view?usp=sharing" },
   { title:"Software Engineering Job Simulation", issuer:"Forage",    year:"2023", url:"https://drive.google.com/file/d/14e-Px_B-GdTxVlWGMuxc0mr1VHmz_kNX/view?usp=sharing" },
   { title:"Basic Data Science",                  issuer:"Various",   year:"2022", url:"https://drive.google.com/file/d/18a7slJ_ULVu8K4RMZDFbygHPqblx48d2/view?usp=sharing" },
+  { title:"Product Management",                  issuer:"Various",   year:"2024", url:"#" },
 ];
-const TICKER_ITEMS = ["Frontend Dev","·","UI/UX Designer","·","React","·","Python","·","Open to Work","·","ITER 2026","·","Creative Code","·","Internships","·"];
+const TICKER_ITEMS = ["Frontend Dev","·","UI/UX Designer","·","React","·","Python","·","Open to Work","·","ITER 2026","·","AI & ML","·","Product Manager","·","Creative Code","·","Internships","·"];
 const NAV_LINKS    = ["About","Skills","Projects","Certifications","Contact"];
 
 // Slot words for the Ashley-style cycling section
@@ -352,33 +374,81 @@ function Cursor({ pos, hov }) {
 }
 
 function Nav({ setHov }) {
-  const navRef = useRef(null);
+  const navRef       = useRef(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // Nav slides down on load
     gsap.fromTo(navRef.current,
       { yPercent: -100, opacity: 0 },
       { yPercent: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.3 }
     );
   }, []);
 
+  // Lock body scroll when drawer open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  const close = () => setOpen(false);
+
   return (
-    <nav ref={navRef} className="nav-pad" style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-      display: "flex", justifyContent: "space-between", alignItems: "center",
-      padding: "22px 56px",
-      background: "rgba(250,248,245,0.92)",
-      backdropFilter: "blur(18px)",
-      borderBottom: `1px solid ${C.faint}`,
-    }}>
-      <span style={{ fontFamily: SERIF, fontSize: 22, fontWeight: 700, color: C.wine, letterSpacing: "0.04em" }}>SD</span>
-      <div style={{ display: "flex", gap: 36 }}>
-        {NAV_LINKS.map((l) => (
-          <a key={l} href={`#${l.toLowerCase()}`} className="nav-link"
-            onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>{l}</a>
+    <>
+      <nav ref={navRef} className="nav-pad" style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        padding: "22px 56px",
+        background: "rgba(250,248,245,0.92)",
+        backdropFilter: "blur(18px)",
+        borderBottom: `1px solid ${C.faint}`,
+      }}>
+        <span style={{ fontFamily: SERIF, fontSize: 22, fontWeight: 700, color: C.wine, letterSpacing: "0.04em" }}>SD</span>
+
+        {/* Desktop links */}
+        <div className="nav-links-desktop" style={{ display: "flex", gap: 36 }}>
+          {NAV_LINKS.map((l) => (
+            <a key={l} href={`#${l.toLowerCase()}`} className="nav-link"
+              onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>{l}</a>
+          ))}
+        </div>
+
+        {/* Hamburger button — mobile only */}
+        <button className={`nav-hamburger${open ? " ham-open" : ""}`}
+          onClick={() => setOpen(o => !o)}
+          style={{
+            background: "none", border: "none", cursor: "pointer",
+            padding: 8, display: "flex", flexDirection: "column",
+            gap: 5, zIndex: 1200,
+          }}>
+          <span className="ham-bar" />
+          <span className="ham-bar" />
+          <span className="ham-bar" />
+        </button>
+      </nav>
+
+      {/* Overlay */}
+      <div className={`nav-overlay${open ? " open" : ""}`} onClick={close} />
+
+      {/* Drawer */}
+      <div className={`nav-drawer${open ? " open" : ""}`}>
+        <p style={{
+          fontFamily: SANS, fontSize: 9, letterSpacing: "0.24em",
+          textTransform: "uppercase", color: C.dimmer, marginBottom: 36,
+        }}>Navigation</p>
+        {NAV_LINKS.map((l, i) => (
+          <a key={l} href={`#${l.toLowerCase()}`} className="drawer-link"
+            style={{ transitionDelay: open ? `${i * 0.05}s` : "0s" }}
+            onClick={close}>
+            {l}
+          </a>
         ))}
+        <div style={{ marginTop: 48, paddingTop: 28, borderTop: `1px solid ${C.faint}` }}>
+          <p style={{ fontFamily: SERIF, fontSize: 14, fontStyle: "italic", color: C.dimmer }}>
+            Crafted with curiosity &amp; code
+          </p>
+        </div>
       </div>
-    </nav>
+    </>
   );
 }
 
@@ -390,36 +460,121 @@ function HeroWord({ children, delay = 0 }) {
   );
 }
 
+// ── TRAIL IMAGES — filenames from public folder ──────────────────────────────
+const TRAIL_IMAGES = [
+  "/one.jpeg",
+  "/two.jpeg",
+  "/three.jpeg",
+  "/four.jpeg",
+  "/five.jpeg",
+  "/six.jpeg",
+  "/seven.jpeg",
+  "/eight.jpeg",
+  "/nine.jpeg",
+  "/ten.jpeg",
+  "/eleven.jpeg",
+  "/twelve.jpeg",
+];
+
 // ── HERO ────────────────────────────────────────────────────────────────────
 function Hero({ setHov }) {
   useHeroReveal();
-  const heroRef = useRef(null);
+  const heroRef      = useRef(null);
   const watermarkRef = useRef(null);
+  const lastSpawn    = useRef(0);
+  const imgIndex     = useRef(0);
 
   useEffect(() => {
-    // Watermark slowly scales up as you scroll (parallax)
+    // Watermark parallax
     gsap.to(watermarkRef.current, {
-      scale: 1.18,
-      y: -60,
+      scale: 1.18, y: -60,
       scrollTrigger: {
         trigger: heroRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1.2,
+        start: "top top", end: "bottom top", scrub: 1.2,
       },
     });
 
-    // Hero section fades out as you scroll away
+    // Hero content fades as you scroll away
     gsap.to(heroRef.current.querySelector(".hero-content"), {
-      yPercent: 12,
-      opacity: 0.3,
+      yPercent: 12, opacity: 0.3,
       scrollTrigger: {
         trigger: heroRef.current,
-        start: "40% top",
-        end: "bottom top",
-        scrub: true,
+        start: "40% top", end: "bottom top", scrub: true,
       },
     });
+
+    // ── Cursor image trail ─────────────────────────────────────────────────
+    const section = heroRef.current;
+
+    const spawnImage = (x, y) => {
+      const now = Date.now();
+      if (now - lastSpawn.current < 320) return;
+      lastSpawn.current = now;
+
+      const src = TRAIL_IMAGES[imgIndex.current % TRAIL_IMAGES.length];
+      imgIndex.current++;
+
+      const img = document.createElement("img");
+      img.src = src;
+
+      // Fixed uniform size — all photos identical 180x240
+      const w = 180;
+      const h = 240;
+      const rot = (Math.random() - 0.5) * 20;
+      const offsetX = (Math.random() - 0.5) * 50;
+      const offsetY = (Math.random() - 0.5) * 50;
+
+      Object.assign(img.style, {
+        position:      "absolute",
+        left:          (x + offsetX - w / 2) + "px",
+        top:           (y + offsetY - h / 2) + "px",
+        width:         w + "px",
+        height:        h + "px",
+        objectFit:     "cover",
+        borderRadius:  "4px",
+        pointerEvents: "none",
+        zIndex:        10,
+        transform:     "rotate(" + rot + "deg) scale(0.3) translateY(40px)",
+        opacity:       "0",
+        transition:    "transform 0.5s cubic-bezier(0.34,1.5,0.64,1), opacity 0.3s ease",
+        willChange:    "transform, opacity",
+      });
+
+      section.appendChild(img);
+
+      // Spring pop-in — starts small from below, bounces to full size
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          img.style.opacity   = "0.95";
+          img.style.transform = "rotate(" + rot + "deg) scale(1) translateY(0px)";
+        });
+      });
+
+      // Gentle float-up and fade out after 2s
+      setTimeout(() => {
+        img.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+        img.style.opacity    = "0";
+        img.style.transform  = "rotate(" + (rot + 4) + "deg) scale(0.9) translateY(-14px)";
+        setTimeout(() => img.remove(), 520);
+      }, 2000);
+    };
+
+    const onMove = (e) => {
+      const rect = section.getBoundingClientRect();
+      // Only spawn when cursor is inside hero section
+      if (
+        e.clientY < rect.top || e.clientY > rect.bottom ||
+        e.clientX < rect.left || e.clientX > rect.right
+      ) return;
+      spawnImage(e.clientX - rect.left, e.clientY - rect.top);
+    };
+
+    // Don't attach on touch devices — no mousemove exists there
+    const isTouch = window.matchMedia("(hover: none)").matches;
+    if (!isTouch) {
+      window.addEventListener("mousemove", onMove);
+    }
+    return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
   return (
@@ -437,7 +592,7 @@ function Hero({ setHov }) {
         willChange: "transform",
       }}>PORTFOLIO</span>
 
-      <div className="hero-content">
+      <div className="hero-content" style={{ position: "relative", zIndex: 20 }}>
         <p style={{
           fontFamily: SANS, fontSize: 10, letterSpacing: "0.26em",
           textTransform: "uppercase", color: C.dimmer, marginBottom: 28,
@@ -709,72 +864,162 @@ function SlotMachine() {
   );
 }
 
-// ── SKILLS with stagger reveal ───────────────────────────────────────────────
+// ── SKILL CARD (defined outside Skills so it never re-mounts) ────────────────
+const SKILL_ACCENT = [
+  "rgba(140,28,48,1)",
+  "rgba(140,28,48,0.55)",
+  "rgba(140,28,48,0.28)",
+  "rgba(26,10,14,0.18)",
+  "rgba(26,10,14,0.1)",
+  "rgba(140,28,48,0.72)",
+];
+
+function SkillCard({ cat, items, index, setHov }) {
+  return (
+    <div className="skill-cat-card" style={{
+      background: C.surface,
+      border: `1px solid ${C.faint}`,
+      padding: "32px 28px 28px",
+      position: "relative",
+      overflow: "hidden",
+      transition: "border-color 0.3s, transform 0.3s",
+    }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = "rgba(140,28,48,0.3)";
+        e.currentTarget.style.transform   = "translateY(-3px)";
+        setHov(true);
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = C.faint;
+        e.currentTarget.style.transform   = "translateY(0)";
+        setHov(false);
+      }}
+    >
+      {/* Accent top bar */}
+      <div style={{
+        position: "absolute", top: 0, left: 0,
+        width: "100%", height: "2px",
+        background: `linear-gradient(90deg, ${SKILL_ACCENT[index] || SKILL_ACCENT[0]} 0%, transparent 100%)`,
+      }} />
+
+      {/* Index */}
+      <span style={{
+        fontFamily: SANS, fontSize: 10, letterSpacing: "0.1em",
+        color: "rgba(140,28,48,0.3)", display: "block", marginBottom: 14,
+      }}>{String(index + 1).padStart(2, "0")}</span>
+
+      {/* Category name */}
+      <p style={{
+        fontFamily: SERIF, fontSize: 18, fontWeight: 600,
+        color: C.text, marginBottom: 18, letterSpacing: "-0.01em",
+      }}>{cat}</p>
+
+      {/* Divider */}
+      <div style={{ height: "1px", background: C.faint, marginBottom: 18 }} />
+
+      {/* Pills */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+        {items.map((s) => (
+          <span key={s} className="pill">{s}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── SKILLS ───────────────────────────────────────────────────────────────────
 function Skills({ setHov }) {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const pills = sectionRef.current.querySelectorAll(".pill");
-    gsap.fromTo(pills,
-      { y: 20, opacity: 0 },
-      {
-        y: 0, opacity: 1, stagger: 0.04, duration: 0.6, ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      }
+    const section = sectionRef.current;
+    if (!section) return;
+
+    // Use once:true so it always fires even if already scrolled past
+    const triggerOpts = { trigger: section, start: "top 85%", once: true };
+
+    gsap.fromTo(section.querySelector(".skills-heading"),
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: "power3.out",
+        scrollTrigger: triggerOpts }
     );
 
-    const heading = sectionRef.current.querySelector(".skills-heading");
-    gsap.fromTo(heading,
-      { y: 50, opacity: 0 },
-      {
-        y: 0, opacity: 1, duration: 1, ease: "power3.out",
-        scrollTrigger: { trigger: heading, start: "top 82%" },
-      }
+    gsap.fromTo(section.querySelectorAll(".skill-cat-card"),
+      { y: 36, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.08, duration: 0.65, ease: "power3.out",
+        scrollTrigger: { ...triggerOpts, start: "top 82%" } }
     );
+
+    gsap.fromTo(section.querySelectorAll(".pill"),
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, stagger: 0.018, duration: 0.3, ease: "back.out(1.5)",
+        scrollTrigger: { ...triggerOpts, start: "top 75%" } }
+    );
+
+    // Refresh ScrollTrigger after a tick so positions are calculated correctly
+    setTimeout(() => ScrollTrigger.refresh(), 100);
   }, []);
 
+  const topRow    = SKILLS.slice(0, 3);
+  const bottomRow = SKILLS.slice(3);
+
   return (
-    <section id="skills" ref={sectionRef} className="section-pad" style={{ padding: "120px 56px", borderBottom: `1px solid ${C.faint}`, background: C.tint }}>
+    <section id="skills" ref={sectionRef} className="section-pad"
+      style={{ padding: "120px 56px", borderBottom: `1px solid ${C.faint}`, background: C.tint }}>
       <SectionHeader label="My Skills" />
-      <div style={{ marginBottom: 64 }}>
+
+      <div style={{ marginBottom: 72 }}>
         <h2 className="skills-heading" style={{
-          opacity: 0, // GSAP reveals
           fontFamily: SERIF, fontSize: "clamp(32px,5.5vw,72px)",
           fontWeight: 600, color: C.text, lineHeight: 1.0, letterSpacing: "-0.02em",
         }}>
-          Technologies &amp;<br /><em style={{ fontStyle: "italic", color: C.wine }}>Tools I Work With</em>
+          Technologies &amp;<br />
+          <em style={{ fontStyle: "italic", color: C.wine }}>Tools I Work With</em>
         </h2>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 52 }}>
-        {Object.entries(SKILLS).map(([cat, items]) => (
-          <div key={cat}>
-            <p style={{ fontFamily: SANS, fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: C.dimmer, marginBottom: 18 }}>{cat}</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {items.map((s) => (
-                <span key={s} className="pill"
-                  onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>{s}</span>
-              ))}
-            </div>
-          </div>
-        ))}
+
+      <div className="skill-grid-top" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 16 }}>
+        {topRow.map((s, i) => <SkillCard key={s.cat} cat={s.cat} items={s.items} index={i} setHov={setHov} />)}
       </div>
+      <div className="skill-grid-bot" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        {bottomRow.map((s, i) => <SkillCard key={s.cat} cat={s.cat} items={s.items} index={i + 3} setHov={setHov} />)}
+      </div>
+
+      <p style={{
+        fontFamily: SERIF, fontSize: 16, fontStyle: "italic",
+        color: C.dimmer, marginTop: 52,
+      }}>
+        Always learning — always adding to this list.
+      </p>
     </section>
   );
 }
 
 // ── PROJECT CARD ─────────────────────────────────────────────────────────────
 function ProjectCard({ proj, idx, setHov }) {
+  const isWip = !proj.url || proj.url === "#";
+  const Tag   = isWip ? "div" : "a";
+  const extra = isWip ? {} : { href: proj.url, target: "_blank", rel: "noreferrer" };
+
   return (
-    <a href={proj.url} target="_blank" rel="noreferrer"
+    <Tag {...extra}
       className="proj-card gsap-proj-card"
-      style={{ opacity: 0, transform: "translateY(30px)" }} // GSAP reveals
+      style={{ opacity: 0, transform: "translateY(30px)", textDecoration: "none" }}
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
-      <span style={{ fontFamily: SANS, fontSize: 10, color: C.dimmer, letterSpacing: "0.1em", display: "block", marginBottom: 20 }}>
-        {String(idx + 1).padStart(2, "0")}
-      </span>
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+        <span style={{ fontFamily: SANS, fontSize: 10, color: C.dimmer, letterSpacing: "0.1em" }}>
+          {String(idx + 1).padStart(2, "0")}
+        </span>
+        {isWip && (
+          <span style={{
+            fontFamily: SANS, fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase",
+            background: "rgba(140,28,48,0.07)", color: C.wine,
+            padding: "3px 10px", borderRadius: 2,
+          }}>In Progress</span>
+        )}
+      </div>
+
       <h3 style={{ fontFamily: SERIF, fontSize: 24, fontWeight: 400, color: C.text, marginBottom: 10, lineHeight: 1.2 }}>{proj.title}</h3>
       <p style={{ fontFamily: SANS, fontSize: 13, color: C.dim, lineHeight: 1.75, marginBottom: 20 }}>{proj.desc}</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 24 }}>
@@ -785,10 +1030,15 @@ function ProjectCard({ proj, idx, setHov }) {
           }}>{t}</span>
         ))}
       </div>
-      <span style={{ fontFamily: SANS, fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: C.dimmer, borderBottom: `1px solid ${C.faint}`, paddingBottom: 2 }}>
-        View Project <span className="proj-card-arrow">↗</span>
+      <span style={{
+        fontFamily: SANS, fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase",
+        color: isWip ? C.dimmer : C.dimmer,
+        borderBottom: `1px solid ${C.faint}`, paddingBottom: 2,
+        opacity: isWip ? 0.45 : 1,
+      }}>
+        {isWip ? "Coming Soon" : <>View Project <span className="proj-card-arrow">↗</span></>}
       </span>
-    </a>
+    </Tag>
   );
 }
 
@@ -850,45 +1100,24 @@ function Projects({ setHov }) {
   );
 }
 
-// ── CERTIFICATIONS with hover floating image peek ─────────────────────────
-// (Ashley's brand-list effect — hover a cert, image floats near cursor)
+// ── CERTIFICATIONS ───────────────────────────────────────────────────────────
 function Certifications({ setHov }) {
-  const peekRef  = useRef(null);
-  const mousePos = useRef({ x: 0, y: 0 });
-
-  // Placeholder gradient "images" for certs (replace with real images if you have them)
-  const certImages = [
-    "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&q=80",
-    "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&q=80",
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80",
-  ];
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    const move = (e) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
-      if (peekRef.current) {
-        peekRef.current.style.left = `${e.clientX + 24}px`;
-        peekRef.current.style.top  = `${e.clientY - 40}px`;
+    const cards = sectionRef.current.querySelectorAll(".cert-card");
+    gsap.fromTo(cards,
+      { y: 36, opacity: 0 },
+      {
+        y: 0, opacity: 1, stagger: 0.12, duration: 0.8, ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
       }
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
+    );
   }, []);
 
-  const showPeek = (imgSrc) => {
-    if (!peekRef.current) return;
-    peekRef.current.src = imgSrc;
-    peekRef.current.classList.add("show");
-  };
-  const hidePeek = () => {
-    if (!peekRef.current) return;
-    peekRef.current.classList.remove("show");
-  };
-
   return (
-    <section id="certifications" className="section-pad" style={{ padding: "120px 56px", borderBottom: `1px solid ${C.faint}`, background: C.tint }}>
-      <img ref={peekRef} className="peek-img" alt="" />
-
+    <section id="certifications" ref={sectionRef} className="section-pad"
+      style={{ padding: "120px 56px", borderBottom: `1px solid ${C.faint}`, background: C.tint }}>
       <SectionHeader label="Certifications" />
       <div style={{ marginBottom: 64 }}>
         <h2 style={{
@@ -901,8 +1130,9 @@ function Certifications({ setHov }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 16 }}>
         {CERTS.map((cert, i) => (
           <div key={cert.title} className="cert-card"
-            onMouseEnter={() => { setHov(true); showPeek(certImages[i]); }}
-            onMouseLeave={() => { setHov(false); hidePeek(); }}>
+            style={{ opacity: 0 }}
+            onMouseEnter={() => setHov(true)}
+            onMouseLeave={() => setHov(false)}>
             <span style={{ fontFamily: SANS, fontSize: 10, color: C.dimmer, letterSpacing: "0.1em", display: "block", marginBottom: 24 }}>
               {String(i + 1).padStart(2, "0")}
             </span>
