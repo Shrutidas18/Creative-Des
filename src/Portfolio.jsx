@@ -61,6 +61,42 @@ const GLOBAL_CSS = `
   .nav-link:hover { color: #8c1c30; }
   .nav-link:hover::after { width: 100%; }
 
+  /* ── Hamburger button ── */
+  .hamburger-btn {
+    display: none;
+    flex-direction: column; justify-content: center; align-items: center;
+    gap: 5px; background: none; border: none; cursor: pointer;
+    padding: 4px; z-index: 1100;
+  }
+  .hamburger-btn span {
+    display: block; width: 22px; height: 1.5px; background: #1a0a0e;
+    transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), opacity 0.25s;
+    transform-origin: center;
+  }
+  .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ── Full-screen mobile menu ── */
+  .mobile-menu {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: #faf8f5; z-index: 1050;
+    flex-direction: column; justify-content: center; align-items: center;
+    gap: 36px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.23,1,0.32,1);
+  }
+  .mobile-menu.open { opacity: 1; pointer-events: all; }
+  .mobile-nav-link {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(40px, 10vw, 56px); font-weight: 600;
+    color: rgba(26,10,14,0.18); text-decoration: none;
+    letter-spacing: -0.02em; line-height: 1;
+    transition: color 0.3s;
+  }
+  .mobile-nav-link:hover { color: #8c1c30; }
+
   /* ── Hero word-split ── */
   .hero-word { display: inline-block; overflow: hidden; }
   .hero-word-inner {
@@ -189,12 +225,26 @@ const GLOBAL_CSS = `
     will-change: transform, opacity;
   }
   .peek-img.show { opacity: 1; transform: rotate(-2deg) scale(1); }
+
+  /* ── Skills grids — responsive ── */
+  .skills-top-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .skills-bottom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
   /* ── Mobile responsive ── */
   @media (max-width: 680px) {
     .about-grid   { grid-template-columns: 1fr !important; gap: 40px !important; }
     .about-bio    { order: -1; }
     .section-pad  { padding: 72px 24px !important; }
-    .hero-pad     { padding: 72px 24px 56px !important; }
+    .hero-pad     { padding: 106px 24px 64px !important; }
     .nav-pad      { padding: 18px 24px !important; }
     .slot-pad     { padding: 80px 24px 120px !important; }
     .contact-pad  { padding: 100px 24px 72px !important; }
@@ -202,8 +252,16 @@ const GLOBAL_CSS = `
     .proj-tab     { margin-right: 16px !important; }
     .cert-card    { padding: 24px 20px !important; }
     .proj-card    { padding: 22px 18px !important; }
-  }
 
+    /* Hamburger: show on mobile, hide desktop links */
+    .nav-desktop-links  { display: none !important; }
+    .hamburger-btn      { display: flex !important; }
+    .mobile-menu        { display: flex !important; }
+
+    /* Skills: collapse to 1 column */
+    .skills-top-grid    { grid-template-columns: 1fr !important; }
+    .skills-bottom-grid { grid-template-columns: 1fr !important; }
+  }
 `;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -373,24 +431,26 @@ function Cursor({ pos, hov }) {
   );
 }
 
+// ── NAV with hamburger ───────────────────────────────────────────────────────
 function Nav({ setHov }) {
-  const navRef       = useRef(null);
+  const navRef = useRef(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    // Nav slides down on load
     gsap.fromTo(navRef.current,
       { yPercent: -100, opacity: 0 },
       { yPercent: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.3 }
     );
   }, []);
 
-  // Lock body scroll when drawer open
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  const close = () => setOpen(false);
+  const handleNavClick = () => setOpen(false);
 
   return (
     <>
@@ -404,49 +464,38 @@ function Nav({ setHov }) {
       }}>
         <span style={{ fontFamily: SERIF, fontSize: 22, fontWeight: 700, color: C.wine, letterSpacing: "0.04em" }}>SD</span>
 
-        {/* Desktop links */}
-        <div className="nav-links-desktop" style={{ display: "flex", gap: 36 }}>
+        {/* Desktop links — hidden on mobile via CSS */}
+        <div className="nav-desktop-links" style={{ display: "flex", gap: 36 }}>
           {NAV_LINKS.map((l) => (
             <a key={l} href={`#${l.toLowerCase()}`} className="nav-link"
               onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>{l}</a>
           ))}
         </div>
 
-        {/* Hamburger button — mobile only */}
-        <button className={`nav-hamburger${open ? " ham-open" : ""}`}
-          onClick={() => setOpen(o => !o)}
-          style={{
-            background: "none", border: "none", cursor: "pointer",
-            padding: 8, display: "flex", flexDirection: "column",
-            gap: 5, zIndex: 1200,
-          }}>
-          <span className="ham-bar" />
-          <span className="ham-bar" />
-          <span className="ham-bar" />
+        {/* Hamburger — hidden on desktop via CSS, shown on mobile */}
+        <button
+          className={`hamburger-btn${open ? " open" : ""}`}
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
+          <span />
+          <span />
+          <span />
         </button>
       </nav>
 
-      {/* Overlay */}
-      <div className={`nav-overlay${open ? " open" : ""}`} onClick={close} />
-
-      {/* Drawer */}
-      <div className={`nav-drawer${open ? " open" : ""}`}>
-        <p style={{
-          fontFamily: SANS, fontSize: 9, letterSpacing: "0.24em",
-          textTransform: "uppercase", color: C.dimmer, marginBottom: 36,
-        }}>Navigation</p>
-        {NAV_LINKS.map((l, i) => (
-          <a key={l} href={`#${l.toLowerCase()}`} className="drawer-link"
-            style={{ transitionDelay: open ? `${i * 0.05}s` : "0s" }}
-            onClick={close}>
+      {/* Full-screen mobile overlay menu */}
+      <div className={`mobile-menu${open ? " open" : ""}`}>
+        {NAV_LINKS.map((l) => (
+          <a
+            key={l}
+            href={`#${l.toLowerCase()}`}
+            className="mobile-nav-link"
+            onClick={handleNavClick}
+          >
             {l}
           </a>
         ))}
-        <div style={{ marginTop: 48, paddingTop: 28, borderTop: `1px solid ${C.faint}` }}>
-          <p style={{ fontFamily: SERIF, fontSize: 14, fontStyle: "italic", color: C.dimmer }}>
-            Crafted with curiosity &amp; code
-          </p>
-        </div>
       </div>
     </>
   );
@@ -517,9 +566,11 @@ function Hero({ setHov }) {
       const img = document.createElement("img");
       img.src = src;
 
-      // Fixed uniform size — all photos identical 180x240
-      const w = 180;
-      const h = 240;
+      // ── Smaller images on mobile ──────────────────────────────────────
+      const isMobile = window.innerWidth < 680;
+      const w = isMobile ? 110 : 180;
+      const h = isMobile ? 145 : 240;
+
       const rot = (Math.random() - 0.5) * 20;
       const offsetX = (Math.random() - 0.5) * 50;
       const offsetY = (Math.random() - 0.5) * 50;
@@ -580,7 +631,10 @@ function Hero({ setHov }) {
   return (
     <section id="hero" ref={heroRef} className="hero-pad" style={{
       minHeight: "100vh", display: "flex", flexDirection: "column",
-      justifyContent: "flex-end", padding: "0 56px 80px", position: "relative",
+      justifyContent: "flex-end",
+      // ── Top padding accounts for fixed navbar (66px) + breathing room ──
+      padding: "106px 56px 80px",
+      position: "relative",
       borderBottom: `1px solid ${C.faint}`, overflow: "hidden",
     }}>
       <span ref={watermarkRef} style={{
@@ -978,10 +1032,11 @@ function Skills({ setHov }) {
         </h2>
       </div>
 
-      <div className="skill-grid-top" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 16 }}>
+      {/* ── Responsive skill grids via CSS classes (collapse to 1col on mobile) ── */}
+      <div className="skills-top-grid">
         {topRow.map((s, i) => <SkillCard key={s.cat} cat={s.cat} items={s.items} index={i} setHov={setHov} />)}
       </div>
-      <div className="skill-grid-bot" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+      <div className="skills-bottom-grid">
         {bottomRow.map((s, i) => <SkillCard key={s.cat} cat={s.cat} items={s.items} index={i + 3} setHov={setHov} />)}
       </div>
 
