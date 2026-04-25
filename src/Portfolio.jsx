@@ -546,9 +546,23 @@ function Nav({ setHov }) {
         </button>
       </nav>
 
-      {/* Full-screen mobile overlay menu */}
-      <div className={`mobile-menu${open ? " open" : ""}`}>
-        {NAV_LINKS.map((l) => (
+     {/* Full-screen mobile overlay menu */}
+<div className={`mobile-menu${open ? " open" : ""}`}>
+  <button
+    onClick={() => setOpen(false)}
+    style={{
+      position: "absolute", top: 28, right: 24,
+      fontFamily: SANS, fontSize: 10, letterSpacing: "0.18em",
+      textTransform: "uppercase", background: "none", border: "none",
+      color: "rgba(26,10,14,0.35)", cursor: "pointer",
+      transition: "color 0.3s",
+    }}
+    onMouseEnter={e => e.currentTarget.style.color = "#8c1c30"}
+    onMouseLeave={e => e.currentTarget.style.color = "rgba(26,10,14,0.35)"}
+  >
+    Close ✕
+  </button>
+  {NAV_LINKS.map((l) => (
           <a
             key={l}
             href={`#${l.toLowerCase()}`}
@@ -736,7 +750,7 @@ function Hero({ setHov }) {
           }}>
             A Fourth-year CS student who blends creativity with code, crafting interfaces that feel as good as they look.
           </p>
-          <a href="/Resume(All).pdf" download className="btn-primary"
+          <a href="/RESUME_SHRUTI.pdf" download className="btn-primary"
             onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
             Download Resume ↓
           </a>
@@ -1270,7 +1284,7 @@ function ProjectCard({ proj, idx, setHov }) {
 }
 
 function Projects({ setHov }) {
-  const [tab, setTab] = useState("mini");
+  const [tab, setTab] = useState("main");
   const gridRef = useRef(null);
   const panels = { mini: MINI_PROJECTS, main: MAIN_PROJECTS, design: DESIGN_WORK };
   const tabs = [
