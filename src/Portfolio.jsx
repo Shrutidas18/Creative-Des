@@ -244,7 +244,7 @@ const GLOBAL_CSS = `
     .about-grid   { grid-template-columns: 1fr !important; gap: 40px !important; }
     .about-bio    { order: -1; }
     .section-pad  { padding: 72px 24px !important; }
-    .hero-pad     { padding: 106px 24px 64px !important; }
+    .hero-pad     { padding: 72px 24px 48px !important; min-height: auto !important; justify-content: flex-start !important; }
     .nav-pad      { padding: 18px 24px !important; }
     .slot-pad     { padding: 80px 24px 120px !important; }
     .contact-pad  { padding: 100px 24px 72px !important; }
@@ -252,6 +252,11 @@ const GLOBAL_CSS = `
     .proj-tab     { margin-right: 16px !important; }
     .cert-card    { padding: 24px 20px !important; }
     .proj-card    { padding: 22px 18px !important; }
+
+    /* Experience specific mobile fixes */
+    .exp-header-row {
+        flex-direction: column !important; align-items: flex-start !important; gap: 4px !important;
+    }
 
     /* Hamburger: show on mobile, hide desktop links */
     .nav-desktop-links  { display: none !important; }
@@ -297,7 +302,7 @@ const MAIN_PROJECTS = [
   { id:5, title:"Pranabandhu Sahoo",    desc:"Personal website for a client, built during internship.",                                                                         tags:["React","Client Work"],          url:"https://pranabandhu.com/" },
 ];
 const DESIGN_WORK = [
-  { id:1, title:"Social Media Graphics", desc:"12 graphics created for various brands and campaigns.", tags:["Canva","Graphic Design"], url:"#" },
+  { id:1, title:"Social Media Graphics", desc:"12 graphics created for various brands and campaigns.", tags:["Canva","Graphic Design"], url:"/graphic-designs" },
   { id:2, title:"UI/UX Designs",         desc:"Figma mockups and wireframes for web interfaces.",      tags:["Figma","UI/UX"],          url:"#" },
 ];
 const SKILLS = [
@@ -332,8 +337,65 @@ const CERTS = [
   { title:"Basic Data Science",                  issuer:"Various",   year:"2022", url:"https://drive.google.com/file/d/18a7slJ_ULVu8K4RMZDFbygHPqblx48d2/view?usp=sharing" },
   { title:"Product Management",                  issuer:"Various",   year:"2024", url:"#" },
 ];
+
+// New Experience Data
+const EXPERIENCE_DATA = [
+    {
+    company: "RSB Healthcare Consulting",
+    role: "Software Engineer Intern",
+    date: "Feb 2025 – Present",
+    location: "Bangalore, India",
+    highlights: [
+      "Currently working as a Software Engineer Intern on a live healthcare SaaS platform serving hospitals and clinics across India.",
+      "Built responsive and performant frontend interfaces using React.",
+      "Integrated complex backend APIs with frontend, implementing features like real-time patient dashboards, appointment scheduling, and report generation.",
+      "Developed and deployed AWS Lambda functions (Node.js) for serverless workflows including automated report generation, SMS/email notifications, and data syncing.",
+      "Significantly improved page load performance and Core Web Vitals through code splitting, lazy loading, and optimized asset delivery."
+    ],
+    tech: ["React", "Node.js", "AWS Lambda", "Tailwind"]
+  },
+  {
+    company: "MoBuzz Media Private Limited",
+    role: "Web Developer Intern",
+    date: "Jul 2025 - Sep 2025",
+    location: "Odisha, India · Remote",
+    highlights: [
+      "Designed and developed 3 fully functional, responsive websites from concept to deployment.",
+      "Conducted client interactions to gather requirements and provide technical input.",
+      "Translated client needs into wireframes and working prototypes using HTML, CSS, JS, and React.",
+      "Focused on user experience, performance optimization, and mobile responsiveness."
+    ],
+    tech: ["React", "Client Work", "Frontend Dev"]
+  },
+  {
+    company: "SkillCraft Technology",
+    role: "Web Development Intern",
+    date: "Jul 2024",
+    location: "India · Remote",
+    highlights: [
+      "Successfully completed 3 individual web development projects during a fast-paced virtual internship.",
+      "Designed responsive, interactive web pages ensuring clean code and cross-browser compatibility.",
+      "Implemented UI enhancements such as form validations and dynamic content rendering.",
+      "Practiced independent problem-solving by researching solutions without direct mentorship."
+    ],
+    tech: ["HTML5", "CSS3", "Vanilla JS"]
+  },
+  {
+    company: "Younity.in",
+    role: "Marketing Specialist",
+    date: "Jul 2022 - Aug 2022",
+    location: "Community Led Ed-tech",
+    highlights: [
+      "Executed marketing strategies across all social media platforms to generate leads.",
+      "Collaborated on up-skilling programs for undergraduate students.",
+      "Supported community management and engagement initiatives."
+    ],
+    tech: ["Social Media", "Lead Gen", "Strategy"]
+  }
+];
+
 const TICKER_ITEMS = ["Frontend Dev","·","UI/UX Designer","·","React","·","Python","·","Open to Work","·","ITER 2026","·","AI & ML","·","Product Manager","·","Creative Code","·","Internships","·"];
-const NAV_LINKS    = ["About","Skills","Projects","Certifications","Contact"];
+const NAV_LINKS    = ["About","Skills","Experience","Projects","Certifications","Contact"]; // Added Experience to Nav
 
 // Slot words for the Ashley-style cycling section
 const SLOT_WORDS = ["Developer","Designer","Creator","Builder","Learner"];
@@ -633,7 +695,7 @@ function Hero({ setHov }) {
       minHeight: "100vh", display: "flex", flexDirection: "column",
       justifyContent: "flex-end",
       // ── Top padding accounts for fixed navbar (66px) + breathing room ──
-      padding: "106px 56px 80px",
+      padding: "88px 56px 80px",
       position: "relative",
       borderBottom: `1px solid ${C.faint}`, overflow: "hidden",
     }}>
@@ -672,7 +734,7 @@ function Hero({ setHov }) {
             fontFamily: SERIF, fontSize: "clamp(17px,2vw,23px)",
             fontWeight: 300, color: C.dim, maxWidth: 500, lineHeight: 1.68,
           }}>
-            A third-year CS student who blends creativity with code — crafting interfaces that feel as good as they look.
+            A Fourth-year CS student who blends creativity with code, crafting interfaces that feel as good as they look.
           </p>
           <a href="/Resume(All).pdf" download className="btn-primary"
             onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
@@ -852,6 +914,114 @@ function About() {
             Whether it's designing sleek interfaces or diving into the backend, I'm always eager to learn, experiment, and bring ideas to life. Currently exploring new tools, contributing to projects, and sharpening my skills to become a well-rounded developer ready for real-world challenges.
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+// ── EXPERIENCE SECTION (Optimized Spacing) ──────────────────────────────────
+function Experience({ setHov }) {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if(!sectionRef.current) return;
+    const cards = sectionRef.current.querySelectorAll(".exp-card");
+    gsap.fromTo(cards,
+      { y: 30, opacity: 0 }, // Reduced initial Y offset for snappier feel
+      {
+        y: 0, opacity: 1, stagger: 0.12, duration: 0.6, ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%", // Slightly later trigger
+        }
+      }
+    );
+  }, []);
+
+  return (
+    <section id="experience" ref={sectionRef} className="section-pad" style={{ 
+      // REDUCED PADDING: Was 120px, now 80px top/bottom
+      padding: "80px 56px", 
+      borderBottom: `1px solid ${C.faint}`, 
+      background: C.tint 
+    }}>
+      <SectionHeader label="Work History" />
+      
+      {/* REDUCED MARGIN: Was 72px, now 32px */}
+      <div style={{ marginBottom: 32 }}>
+        <h2 style={{
+          fontFamily: SERIF, fontSize: "clamp(28px,5vw,64px)", // Slightly smaller font
+          fontWeight: 600, color: C.text, lineHeight: 1.1, letterSpacing: "-0.02em",
+        }}>
+          My Professional<br /><em style={{ fontStyle: "italic", color: C.wine }}>Journey</em>
+        </h2>
+      </div>
+
+      {/* REDUCED GAP: Was 24px, now 16px between cards */}
+     <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+        {EXPERIENCE_DATA.map((exp, i) => (
+          <div key={i} style={{ display: "flex", gap: 20, alignItems: "stretch" }}>
+
+            {/* ── Timeline spine ── */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 20, flexShrink: 0 }}>
+              {/* Dot */}
+              <div style={{
+                width: 10, height: 10, borderRadius: "50%",
+                background: C.wine, flexShrink: 0, marginTop: 28,
+                boxShadow: `0 0 0 3px rgba(140,28,48,0.15)`,
+              }} />
+              {/* Line — hidden on last item */}
+              {i < EXPERIENCE_DATA.length - 1 && (
+                <div style={{
+                  width: 1, flex: 1, marginTop: 6,
+                  background: `linear-gradient(to bottom, rgba(140,28,48,0.3), rgba(140,28,48,0.05))`,
+                }} />
+              )}
+            </div>
+
+          <div 
+            className="exp-card" 
+            onMouseEnter={() => setHov(true)}
+            onMouseLeave={() => setHov(false)}
+            style={{ 
+              opacity: 0,
+              flex: 1,
+              marginBottom: 16,
+              background: C.surface, 
+              border: `1px solid ${C.faint}`, 
+              padding: "24px",
+              transition: "border-color 0.3s, transform 0.3s",
+              transformOrigin: "left center"
+            }}
+          >
+            <div className="exp-header-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+              <h3 style={{ fontFamily: SERIF, fontSize: 20, fontWeight: 600, color: C.text }}>{exp.company}</h3>
+              <span style={{ fontFamily: SANS, fontSize: 10, color: C.dimmer, textTransform: "uppercase", letterSpacing: "0.1em" }}>{exp.date}</span>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
+              <p style={{ fontFamily: SANS, fontSize: 14, fontWeight: 500, color: C.wine }}>{exp.role}</p>
+              <span style={{ fontFamily: SANS, fontSize: 11, color: C.dimmer }}>{exp.location}</span>
+            </div>
+
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 6 }}>
+              {exp.highlights.map((point, idx) => (
+                <li key={idx} style={{ fontFamily: SANS, fontSize: 13, color: C.dim, lineHeight: 1.5, display: "flex", gap: 8 }}>
+                  <span style={{ color: C.wine, marginTop: 4 }}>•</span> {point}
+                </li>
+              ))}
+            </ul>
+
+            <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid ${C.faint}` }}>
+               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                 {exp.tech.map(t => (
+                   <span key={t} className="pill" style={{ fontSize: 8, padding: "4px 10px" }}>{t}</span>
+                 ))}
+               </div>
+          </div>
+          </div>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -1052,10 +1222,12 @@ function Skills({ setHov }) {
 
 // ── PROJECT CARD ─────────────────────────────────────────────────────────────
 function ProjectCard({ proj, idx, setHov }) {
+  const isInternal = proj.url && proj.url.startsWith("/") && !proj.url.startsWith("//");
   const isWip = !proj.url || proj.url === "#";
   const Tag   = isWip ? "div" : "a";
-  const extra = isWip ? {} : { href: proj.url, target: "_blank", rel: "noreferrer" };
-
+  const extra = isWip ? {} : isInternal
+    ? { href: proj.url }
+    : { href: proj.url, target: "_blank", rel: "noreferrer" };
   return (
     <Tag {...extra}
       className="proj-card gsap-proj-card"
@@ -1287,9 +1459,13 @@ export default function Portfolio() {
       <main>
         <Hero setHov={setHov} />
         <Ticker />
-        <BigMarquee />          {/* ← Ashley-style huge scrolling text */}
+        <BigMarquee />          
         <About />
-        <SlotMachine />         {/* ← Slot-cycling "Developer / Designer / Creator" */}
+        
+        {/* ── NEW EXP SECTION ADDED HERE ── */}
+        <Experience setHov={setHov} />
+
+        <SlotMachine />         
         <Skills setHov={setHov} />
         <Projects setHov={setHov} />
         <Certifications setHov={setHov} />
