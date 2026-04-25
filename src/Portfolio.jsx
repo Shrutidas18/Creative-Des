@@ -885,7 +885,7 @@ function About() {
           {[
             { label: "Education", val: "B.Tech CS · ITER · 2022–2026" },
             { label: "Interests",  val: "UI/UX · Web Dev · AI · Data Science" },
-            { label: "Status",     val: "Open to internships & collabs" },
+            { label: "Status",     val: "Open to Freelancing & collabs" },
             { label: "GitHub",
               val: <a href="https://github.com/Shrutidas18" target="_blank" rel="noreferrer"
                       style={{ color: C.wine, textDecoration: "none" }}>Shrutidas18</a> },
@@ -1411,7 +1411,7 @@ function Contact({ setHov }) {
           Let's build<br /><em style={{ fontStyle: "italic", color: C.wine }}>something great.</em>
         </h2>
         <p style={{ fontFamily: SANS, fontSize: 14, color: C.dim, marginBottom: 56, letterSpacing: "0.04em", lineHeight: 1.7 }}>
-          Open to internships, collaborations, and interesting conversations. Reach out and let's make something worth building.
+          Open to Freelancing, collaborations, and interesting conversations. Reach out and let's make something worth building.
         </p>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
           <a href="mailto:shrutidas574@gmail.com" className="btn-primary"
