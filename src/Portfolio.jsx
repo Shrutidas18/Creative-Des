@@ -346,7 +346,7 @@ const EXPERIENCE_DATA = [
     date: "Feb 2025 – Present",
     location: "Bangalore, India",
     highlights: [
-      "Currently working as a Software Engineer Intern on a live healthcare SaaS platform serving hospitals and clinics across India.",
+      "Currently working as a Software Engineer Intern on a live healthcare SaaS platform.",
       "Built responsive and performant frontend interfaces using React.",
       "Integrated complex backend APIs with frontend, implementing features like real-time patient dashboards, appointment scheduling, and report generation.",
       "Developed and deployed AWS Lambda functions (Node.js) for serverless workflows including automated report generation, SMS/email notifications, and data syncing.",
@@ -852,7 +852,7 @@ function About() {
     }
   }, []);
 
-  const bigQuote = "I'm a third-year Computer Science student passionate about crafting engaging web experiences.";
+  const bigQuote = "I'm a Fourth-year Computer Science student passionate about crafting engaging web experiences.";
 
   return (
     <section id="about" ref={sectionRef} className="section-pad" style={{ padding: "120px 56px", borderBottom: `1px solid ${C.faint}` }}>
