@@ -295,11 +295,48 @@ const MINI_PROJECTS = [
   { id:4, title:"Landing Page", desc:"A basic responsive landing page.",                      tags:["HTML","CSS","JS"], url:"https://landing-page-shruti-das-projects-64e0d3f9.vercel.app/" },
 ];
 const MAIN_PROJECTS = [
-  { id:1, title:"Resume Analyzer",      desc:"An AI-powered resume analyzer that reviews your resume, scores it against a job description, and suggests improvements. Built with React and integrated with an LLM API.", tags:["React","AI","LLM","Python"], url:null },
-  { id:2, title:"BareGlow Skincare",    desc:"A full skincare product Web App built with React.",                                                                               tags:["React","CSS","UI/UX"],          url:"https://bare-glow-shruti-das-projects-64e0d3f9.vercel.app/" },
-  { id:3, title:"Photo Booth Web App",  desc:"Take snapshots using camera & apply fun effects.",                                                                                tags:["React","Camera API"],           url:"https://your-photobooth-url.netlify.app" },
-  { id:4, title:"Shree Ganesh Patholab",desc:"Real-time client project built during internship.",                                                                               tags:["React","Client Work"],          url:"https://ganesh-patholab.vercel.app/" },
-  { id:5, title:"Pranabandhu Sahoo",    desc:"Personal website for a client, built during internship.",                                                                         tags:["React","Client Work"],          url:"https://pranabandhu.com/" },
+  {
+    id: 1,
+    title: "Mini ERP + CRM Operations Portal",
+    desc: "A full-stack operations portal for managing customers, products, inventory, stock movements, and sales challans with role-based access control.",
+    tags: ["React", "Node.js", "Express", "Prisma", "MySQL", "JWT"],
+    url: null,
+  },
+  {
+    id: 2,
+    title: "Second Brain",
+    desc: "An AI-powered knowledge management platform designed to organize, connect, and retrieve personal information intelligently.",
+    tags: ["React", "AI", "LLM", "Python"],
+    url: null,
+  },
+  {
+    id: 3,
+    title: "Resume Analyzer",
+    desc: "An AI-powered resume analyzer that reviews your resume, scores it against a job description, and suggests improvements.",
+    tags: ["React", "AI", "LLM", "Python"],
+    url: null,
+  },
+  {
+    id: 4,
+    title: "BareGlow Skincare",
+    desc: "A full skincare product web app built with React, focused on a clean and engaging shopping experience.",
+    tags: ["React", "CSS", "UI/UX"],
+    url: "https://bare-glow-shruti-das-projects-64e0d3f9.vercel.app/",
+  },
+  {
+    id: 5,
+    title: "Shree Ganesh Patholab",
+    desc: "Real-time client project built during internship.",
+    tags: ["React", "Client Work"],
+    url: "https://ganesh-patholab.vercel.app/",
+  },
+  {
+    id: 6,
+    title: "Pranabandhu Sahoo",
+    desc: "Personal website for a client, built during internship.",
+    tags: ["React", "Client Work"],
+    url: "https://pranabandhu.com/",
+  },
 ];
 const DESIGN_WORK = [
   { id:1, title:"Social Media Graphics", desc:"12 graphics created for various brands and campaigns.", tags:["Canva","Graphic Design"], url:"/graphic-designs" },
@@ -380,18 +417,6 @@ const EXPERIENCE_DATA = [
     ],
     tech: ["HTML5", "CSS3", "Vanilla JS"]
   },
-  {
-    company: "Younity.in",
-    role: "Marketing Specialist",
-    date: "Jul 2022 - Aug 2022",
-    location: "Community Led Ed-tech",
-    highlights: [
-      "Executed marketing strategies across all social media platforms to generate leads.",
-      "Collaborated on up-skilling programs for undergraduate students.",
-      "Supported community management and engagement initiatives."
-    ],
-    tech: ["Social Media", "Lead Gen", "Strategy"]
-  }
 ];
 
 const TICKER_ITEMS = ["Frontend Dev","·","UI/UX Designer","·","React","·","Python","·","Open to Work","·","ITER 2026","·","AI & ML","·","Product Manager","·","Creative Code","·","Internships","·"];
@@ -748,9 +773,9 @@ function Hero({ setHov }) {
             fontFamily: SERIF, fontSize: "clamp(17px,2vw,23px)",
             fontWeight: 300, color: C.dim, maxWidth: 500, lineHeight: 1.68,
           }}>
-            A Fourth-year CS student who blends creativity with code, crafting interfaces that feel as good as they look.
+            A Computer Science graduate passionate about building thoughtful, user-focused interfaces where creativity meets code.
           </p>
-          <a href="/RESUME_SHRUTI.pdf" download className="btn-primary"
+          <a href="/Shruti_DasSDE.pdf" download className="btn-primary"
             onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
             Download Resume ↓
           </a>
@@ -866,8 +891,7 @@ function About() {
     }
   }, []);
 
-  const bigQuote = "I'm a Fourth-year Computer Science student passionate about crafting engaging web experiences.";
-
+  const bigQuote = "I'm a Computer Science graduate passionate about building engaging, intuitive, and impactful web experiences.";
   return (
     <section id="about" ref={sectionRef} className="section-pad" style={{ padding: "120px 56px", borderBottom: `1px solid ${C.faint}` }}>
       <SectionHeader label="About Me" />
@@ -922,10 +946,10 @@ function About() {
         {/* Bio */}
         <div className="about-bio">
           <p className="bio-para" style={{ opacity: 0, fontFamily: SANS, fontSize: 14, color: C.dim, lineHeight: 1.9, marginBottom: 20 }}>
-            I specialize in web development and UI/UX design, with a growing interest in artificial intelligence. I enjoy blending creativity with technology to build intuitive, user-focused solutions.
+            I’m a Computer Science graduate passionate about web development, UI/UX, and building digital experiences that are both functional and intuitive. I enjoy blending creativity with technology to turn ideas into thoughtful, user-focused solutions.
           </p>
           <p className="bio-para" style={{ opacity: 0, fontFamily: SANS, fontSize: 14, color: C.dim, lineHeight: 1.9 }}>
-            Whether it's designing sleek interfaces or diving into the backend, I'm always eager to learn, experiment, and bring ideas to life. Currently exploring new tools, contributing to projects, and sharpening my skills to become a well-rounded developer ready for real-world challenges.
+            From crafting responsive interfaces to working with APIs and backend services, I’m always curious to understand how things work and find better ways to build them. I’m continuously exploring new technologies, contributing to projects, and strengthening my skills to grow as a well-rounded software developer.
           </p>
         </div>
       </div>
@@ -1293,14 +1317,19 @@ function Projects({ setHov }) {
     { key: "design", label: "UI/UX & Design" },
   ];
 
-  // Re-run stagger whenever tab changes
+  // Re-run stagger whenever tab changes.
+  // requestAnimationFrame ensures every card in the new tab has actually
+  // painted to the DOM before GSAP queries + animates it — without this,
+  // cards rendered later in the list (e.g. "Second Brain", "Resume Analyzer")
+  // can be missed by querySelectorAll and stay stuck at opacity: 0.
   useEffect(() => {
     if (!gridRef.current) return;
-    const cards = gridRef.current.querySelectorAll(".gsap-proj-card");
-    gsap.fromTo(cards,
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "power3.out" }
-    );
+    const raf = requestAnimationFrame(() => {
+      const cards = gridRef.current.querySelectorAll(".gsap-proj-card");
+      gsap.set(cards, { opacity: 0, y: 30 });
+      gsap.to(cards, { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "power3.out" });
+    });
+    return () => cancelAnimationFrame(raf);
   }, [tab]);
 
   return (
