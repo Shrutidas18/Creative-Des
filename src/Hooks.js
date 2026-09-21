@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { GLOBAL_CSS } from "./constants";
+import { GLOBAL_CSS } from "./Constants";
 
 gsap.registerPlugin(ScrollTrigger);
 

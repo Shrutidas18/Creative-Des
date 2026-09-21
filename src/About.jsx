@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { C, SERIF, SANS } from "./constants";
+import { C, SERIF, SANS } from "./Constants";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
