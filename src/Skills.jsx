@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { C, SERIF, SANS, SKILLS } from "./constants";
+import { C, SERIF, SANS, SKILLS } from "./Constants";
 import { SectionHeader } from "./About";
 
 // ── SKILL CARD (defined outside Skills so it never re-mounts) ────────────────

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { C, SERIF, SANS, MINI_PROJECTS, MAIN_PROJECTS, DESIGN_WORK } from "./constants";
+import { C, SERIF, SANS, MINI_PROJECTS, MAIN_PROJECTS, DESIGN_WORK } from "./Constants";
 import { SectionHeader } from "./About";
 
 // ── PROJECT CARD ─────────────────────────────────────────────────────────────

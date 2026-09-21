@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { C, SERIF, SANS, EXPERIENCE_DATA, SLOT_WORDS } from "./constants";
+import { C, SERIF, SANS, EXPERIENCE_DATA, SLOT_WORDS } from "./Constants";
 import { SectionHeader } from "./About";
 
 // ── EXPERIENCE SECTION (Optimized Spacing) ──────────────────────────────────

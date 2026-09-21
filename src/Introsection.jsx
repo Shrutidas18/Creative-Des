@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { C, SERIF, SANS, TICKER_ITEMS, NAV_LINKS, TRAIL_IMAGES } from "./constants";
-import { useHeroReveal } from "./hooks";
+import { C, SERIF, SANS, TICKER_ITEMS, NAV_LINKS, TRAIL_IMAGES } from "./Constants";
+import { useHeroReveal } from "./Hooks";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // COMPONENTS

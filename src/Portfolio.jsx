@@ -1,10 +1,10 @@
-import { useStyles, useLenis, useSectionRules, useCursor } from "./hooks";
-import { Cursor, Nav, Hero, Ticker, BigMarquee } from "./IntroSection";
+import { useStyles, useLenis, useSectionRules, useCursor } from "./Hooks";
+import { Cursor, Nav, Hero, Ticker, BigMarquee } from "./Introsection";
 import { About } from "./About";
 import { Experience, SlotMachine } from "./Experience";
 import { Skills } from "./Skills";
 import { Projects } from "./Projects";
-import { Certifications, Contact, Footer } from "./FooterSection";
+import { Certifications, Contact, Footer } from "./Footersection";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ROOT
